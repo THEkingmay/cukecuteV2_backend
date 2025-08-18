@@ -1,4 +1,14 @@
 const dotenv = require("dotenv")
+const rateLimit = require('express-rate-limit')
+
+const commentLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 นาที
+  max: 5, // สูงสุด 5 requests ต่อ windowMs
+  message: {
+    error: "คุณส่งคอมเมนต์บ่อยเกินไป กรุณารอสักครู่"
+  }
+})
+
 dotenv.config()
 
 const supabase = require('../config/supabase')
@@ -6,11 +16,11 @@ const transporter = require('../config/email')
 
 const router = require('express').Router()
 
-router.post('/addComment' , async (req , res)=>{
+router.post('/addComment' ,  commentLimiter, async (req , res)=>{
     const {comment , uid} = req.body
     
     const { data, error } = await supabase
-        .from("comments")
+        .from("comments")   
         .insert([{ comment, uid }])
         .select()
 
