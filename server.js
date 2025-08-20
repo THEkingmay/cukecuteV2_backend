@@ -12,6 +12,9 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
+app.get('/ping' , (req ,res)=>{
+    res.status(200).json({massge : "ping server success"})
+})
 app.use('/comment' , commentRouter )
 
 app.listen(PORT ,()=>{
