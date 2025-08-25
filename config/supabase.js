@@ -4,8 +4,8 @@ const dotenv = require("dotenv")
 dotenv.config()
 
 const supabase = createClient(
-  process.env.PROJECT_URL,
-  process.env.MY_SECERT
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SECERT
 )
 
 module.exports = supabase
